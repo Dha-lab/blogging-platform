@@ -1,0 +1,296 @@
+.admin-panel {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.admin-loading {
+  text-align: center;
+  padding: 3rem;
+  color: #6b7280;
+  font-size: 1.2rem;
+}
+
+.admin-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.admin-header h1 {
+  color: #1a202c;
+  margin: 0 0 0.5rem 0;
+  font-size: 2rem;
+}
+
+.admin-header p {
+  color: #6b7280;
+  margin: 0;
+}
+
+.admin-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.admin-tabs button {
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #e5e7eb;
+  background: white;
+  color: #6b7280;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.admin-tabs button.active {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+.admin-tabs button:hover:not(.active) {
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+
+.error-message {
+  background: #fed7d7;
+  color: #c53030;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+/* Overview Styles */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.stat-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+  text-align: center;
+}
+
+.stat-card h3 {
+  color: #6b7280;
+  margin: 0 0 0.5rem 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.stat-number {
+  color: #1a202c;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* Users Table Styles */
+.table-container {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.admin-table th {
+  background: #f8fafc;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+.admin-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.role-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.role-badge.admin {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.role-badge.user {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.role-btn {
+  padding: 0.5rem 1rem;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.role-btn:hover:not(:disabled) {
+  background: #2563eb;
+}
+
+.role-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.delete-btn {
+  padding: 0.5rem 1rem;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.delete-btn:hover:not(:disabled) {
+  background: #dc2626;
+}
+
+.delete-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* Posts Grid Styles */
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.admin-post-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+}
+
+.admin-post-card .post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.admin-post-card h3 {
+  color: #1a202c;
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  flex: 1;
+}
+
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.status-badge.published {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status-badge.draft {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.admin-post-card .post-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.admin-post-card .post-content p {
+  color: #4b5563;
+  line-height: 1.5;
+  margin: 0 0 1rem 0;
+}
+
+.admin-post-card .post-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+  .admin-panel {
+    padding: 1rem;
+  }
+  
+  .admin-tabs {
+    flex-direction: column;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .table-container {
+    overflow-x: auto;
+  }
+  
+  .posts-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .admin-post-card .post-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
+}

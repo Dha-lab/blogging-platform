@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: blogging-platform-api
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        fromDatabase:
+          name: blogging-platform
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
