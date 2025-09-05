@@ -207,6 +207,8 @@
   cursor: not-allowed;
 }
 
+/* Responsive styles */
+
 @media (max-width: 768px) {
   .create-post-header {
     padding: 1rem;
@@ -232,3 +234,4 @@
     flex-direction: column;
   }
 }
+
