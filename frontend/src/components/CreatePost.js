@@ -1,7 +1,15 @@
 import React from "react";
 import "./CreatePost.css";
 
-const CreatePost = ({ postData, setPostData, handleCreatePost, postLoading, user, setCurrentView, error }) => {
+const CreatePost = ({
+  postData,
+  setPostData,
+  handleCreatePost,
+  postLoading,
+  user,
+  setCurrentView,
+  error,
+}) => {
   const handleChange = (e) => {
     setPostData((prev) => ({
       ...prev,
@@ -11,6 +19,20 @@ const CreatePost = ({ postData, setPostData, handleCreatePost, postLoading, user
 
   const isoDate = new Date().toISOString();
   const displayDate = isoDate.replace("T", " ").slice(0, 19);
+
+  const onPublish = (e) => {
+    e.preventDefault();
+    handleCreatePost(e, "published");
+  };
+
+  const onSaveDraft = (e) => {
+    e.preventDefault();
+    handleCreatePost(e, "draft");
+  };
+
+  const onCancelClick = () => {
+    setCurrentView("posts");
+  };
 
   return (
     <div className="create-post-container">
@@ -30,7 +52,12 @@ const CreatePost = ({ postData, setPostData, handleCreatePost, postLoading, user
         </nav>
 
         <div className="header-right" aria-label="User panel">
-          <div className="notification" role="button" tabIndex={0} aria-label="Notifications">
+          <div
+            className="notification"
+            role="button"
+            tabIndex={0}
+            aria-label="Notifications"
+          >
             <span>🔔</span>
           </div>
           <div className="user-avatar" aria-label="User avatar" tabIndex={0}>
@@ -41,10 +68,14 @@ const CreatePost = ({ postData, setPostData, handleCreatePost, postLoading, user
 
       {/* Main Content */}
       <main className="main-content">
-        <form className="create-post-form" onSubmit={(e) => { e.preventDefault(); handleCreatePost(e); }}>
+        <form className="create-post-form" onSubmit={onPublish}>
           <h2>Create New Post</h2>
 
-          {error && <div className="error-message" role="alert">{error}</div>}
+          {error && (
+            <div className="error-message" role="alert">
+              {error}
+            </div>
+          )}
 
           <div className="form-group">
             <label htmlFor="post-title">Title</label>
@@ -94,22 +125,26 @@ const CreatePost = ({ postData, setPostData, handleCreatePost, postLoading, user
           </div>
 
           <div className="form-actions">
-            <button type="button" className="cancel-btn" onClick={() => setCurrentView("posts")} disabled={postLoading}>
+            <button
+              type="button"
+              className="cancel-btn"
+              onClick={onCancelClick}
+              disabled={postLoading}
+            >
               Cancel
             </button>
             <button
               type="button"
               className="draft-btn"
-              onClick={(e) => handleCreatePost(e, "draft")}
+              onClick={onSaveDraft}
               disabled={postLoading}
               aria-label="Save post as draft"
             >
               Save Draft
             </button>
             <button
-              type="button"
+              type="submit"
               className="publish-btn"
-              onClick={(e) => handleCreatePost(e, "published")}
               disabled={postLoading}
               aria-label="Publish post"
             >
