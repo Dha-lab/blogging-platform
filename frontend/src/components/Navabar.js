@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
-import './Navbar.css';
+import React, { useState } from "react";
+import "./Navbar.css";
 
-const Navbar = ({ user, onLogout, currentView, onViewChange }) => {
+const Navbar = ({ user, handleLogout, currentView, setCurrentView }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  // Close mobile menu when changing view
+  const handleViewChange = (view) => {
+    setCurrentView(view);
+    setIsMobileMenuOpen(false);
   };
 
   return (
@@ -16,40 +22,38 @@ const Navbar = ({ user, onLogout, currentView, onViewChange }) => {
           <span className="logo-icon">📱</span>
           <span className="logo-text">Blogr</span>
         </div>
-        
+
         {/* Desktop Menu */}
         <div className="navbar-menu">
-          <button 
-            className={currentView === 'posts' ? 'active' : ''}
-            onClick={() => onViewChange('posts')}
+          <button
+            className={currentView === "posts" ? "active" : ""}
+            onClick={() => handleViewChange("posts")}
           >
             Home
           </button>
-          <button 
-            className={currentView === 'create' ? 'active' : ''}
-            onClick={() => onViewChange('create')}
+          <button
+            className={currentView === "create" ? "active" : ""}
+            onClick={() => handleViewChange("create")}
           >
             Create Post
           </button>
-          {user && user.role === 'admin' && (
-            <button 
-              className={currentView === 'admin' ? 'active' : ''}
-              onClick={() => onViewChange('admin')}
+          {user && user.role === "admin" && (
+            <button
+              className={currentView === "admin" ? "active" : ""}
+              onClick={() => handleViewChange("admin")}
             >
               Admin Panel
             </button>
           )}
         </div>
-        
+
         {/* User Section */}
         <div className="navbar-user">
-          <div className="notification-icon">
+          <div className="notification" title="Notifications">
             <span>🔔</span>
           </div>
-          <div className="user-menu">
-            <div className="user-avatar">
-              <span>{user?.name?.charAt(0).toUpperCase() || 'U'}</span>
-            </div>
+          <div className="user-menu" tabIndex={0} aria-label="User menu">
+            <div className="user-avatar">{user?.name?.charAt(0).toUpperCase() || "U"}</div>
             <div className="user-dropdown">
               <div className="user-info">
                 <p className="user-name">{user?.name}</p>
@@ -57,50 +61,36 @@ const Navbar = ({ user, onLogout, currentView, onViewChange }) => {
                 <p className="user-role">{user?.role}</p>
               </div>
               <hr />
-              <button className="logout-btn" onClick={onLogout}>
+              <button className="logout-btn" onClick={handleLogout}>
                 Logout
               </button>
             </div>
           </div>
         </div>
-        
+
         {/* Mobile Menu Toggle */}
-        <div className="mobile-menu-toggle" onClick={toggleMobileMenu}>
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
+        <button
+          aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+          className={`mobile-menu-toggle ${isMobileMenuOpen ? "open" : ""}`}
+          onClick={toggleMobileMenu}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
       </div>
-      
+
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="mobile-menu">
-          <button 
-            className={currentView === 'posts' ? 'active' : ''}
-            onClick={() => {
-              onViewChange('posts');
-              setIsMobileMenuOpen(false);
-            }}
-          >
+          <button onClick={() => handleViewChange("posts")} className={currentView === "posts" ? "active" : ""}>
             Home
           </button>
-          <button 
-            className={currentView === 'create' ? 'active' : ''}
-            onClick={() => {
-              onViewChange('create');
-              setIsMobileMenuOpen(false);
-            }}
-          >
+          <button onClick={() => handleViewChange("create")} className={currentView === "create" ? "active" : ""}>
             Create Post
           </button>
-          {user && user.role === 'admin' && (
-            <button 
-              className={currentView === 'admin' ? 'active' : ''}
-              onClick={() => {
-                onViewChange('admin');
-                setIsMobileMenuOpen(false);
-              }}
-            >
+          {user && user.role === "admin" && (
+            <button onClick={() => handleViewChange("admin")} className={currentView === "admin" ? "active" : ""}>
               Admin Panel
             </button>
           )}
@@ -109,7 +99,7 @@ const Navbar = ({ user, onLogout, currentView, onViewChange }) => {
             <p>{user?.name}</p>
             <p>{user?.email}</p>
           </div>
-          <button className="mobile-logout-btn" onClick={onLogout}>
+          <button className="mobile-logout-btn" onClick={handleLogout}>
             Logout
           </button>
         </div>

@@ -1,173 +1,122 @@
-import React, { useState } from 'react';
-import { postsAPI } from '../services/api';
-import './CreatePost.css';
+import React from "react";
+import "./CreatePost.css";
 
-const CreatePost = ({ user, onPostCreated, onCancel }) => {
-  const [formData, setFormData] = useState({
-    title: '',
-    content: ''
-  });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-
+const CreatePost = ({ postData, setPostData, handleCreatePost, postLoading, user, setCurrentView, error }) => {
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    setPostData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
   };
 
-  const handleSubmit = async (status = 'published') => {
-    if (!formData.title.trim() || !formData.content.trim()) {
-      setError('Please fill in all fields');
-      return;
-    }
-
-    setLoading(true);
-    setError('');
-
-    try {
-      const response = await postsAPI.createPost({
-        ...formData,
-        status
-      });
-      
-      if (onPostCreated) {
-        onPostCreated(response.data);
-      }
-      
-      // Reset form
-      setFormData({ title: '', content: '' });
-      
-      if (status === 'published') {
-        alert('Post published successfully!');
-      } else {
-        alert('Post saved as draft!');
-      }
-    } catch (err) {
-      setError(err.response?.data?.msg || 'Error creating post');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const currentDate = new Date().toISOString().slice(0, 19) + 'Z';
+  const isoDate = new Date().toISOString();
+  const displayDate = isoDate.replace("T", " ").slice(0, 19);
 
   return (
     <div className="create-post-container">
       {/* Header */}
       <header className="create-post-header">
-        <div className="header-left">
-          <div className="logo">
+        <div className="header-left" role="banner">
+          <div className="logo" tabIndex={0} aria-label="Blog logo">
             <span className="logo-icon">📱</span>
-            <h1>Blogr</h1>
+            <span className="logo-text">Blogr</span>
           </div>
         </div>
-        
-        <nav className="nav-menu">
+
+        <nav className="nav-menu" role="navigation" aria-label="Main navigation">
           <a href="#home">Home</a>
           <a href="#posts">Posts</a>
           <a href="#authors">Authors</a>
         </nav>
-        
-        <div className="header-right">
-          <div className="notification">
+
+        <div className="header-right" aria-label="User panel">
+          <div className="notification" role="button" tabIndex={0} aria-label="Notifications">
             <span>🔔</span>
           </div>
-          <div className="user-avatar">
-            <span>{user?.name?.charAt(0).toUpperCase() || 'U'}</span>
+          <div className="user-avatar" aria-label="User avatar" tabIndex={0}>
+            <span>{user?.name?.charAt(0).toUpperCase() || "U"}</span>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
       <main className="main-content">
-        <div className="create-post-form">
+        <form className="create-post-form" onSubmit={(e) => { e.preventDefault(); handleCreatePost(e); }}>
           <h2>Create New Post</h2>
-          
-          {error && (
-            <div className="error-message">
-              {error}
-            </div>
-          )}
-          
+
+          {error && <div className="error-message" role="alert">{error}</div>}
+
           <div className="form-group">
-            <label>Title</label>
+            <label htmlFor="post-title">Title</label>
             <input
+              id="post-title"
               type="text"
               name="title"
               placeholder="Enter post title"
-              value={formData.title}
+              value={postData.title}
               onChange={handleChange}
-              disabled={loading}
+              disabled={postLoading}
+              required
+              maxLength={200}
             />
           </div>
-          
+
           <div className="form-group">
-            <label>Content</label>
+            <label htmlFor="post-content">Content</label>
             <textarea
+              id="post-content"
               name="content"
               placeholder="Write your post content here"
-              value={formData.content}
+              value={postData.content}
               onChange={handleChange}
-              rows="10"
-              disabled={loading}
+              disabled={postLoading}
+              rows={10}
+              required
             />
           </div>
-          
+
           <div className="form-group">
-            <label>Author</label>
-            <select disabled>
-              <option>{user?.name || 'Select an author'}</option>
+            <label htmlFor="post-author">Author</label>
+            <select id="post-author" disabled>
+              <option>{user?.name || "Unavailable"}</option>
             </select>
           </div>
-          
+
           <div className="form-row">
             <div className="form-group">
               <label>Created At</label>
-              <input
-                type="text"
-                value={currentDate.replace('T', ' ').slice(0, -1)}
-                disabled
-              />
+              <input type="text" value={displayDate} disabled aria-readonly="true" />
             </div>
             <div className="form-group">
               <label>Updated At</label>
-              <input
-                type="text"
-                value={currentDate.replace('T', ' ').slice(0, -1)}
-                disabled
-              />
+              <input type="text" value={displayDate} disabled aria-readonly="true" />
             </div>
           </div>
-          
+
           <div className="form-actions">
-            <button 
-              type="button" 
-              className="cancel-btn"
-              onClick={onCancel}
-              disabled={loading}
-            >
+            <button type="button" className="cancel-btn" onClick={() => setCurrentView("posts")} disabled={postLoading}>
               Cancel
             </button>
-            <button 
-              type="button" 
+            <button
+              type="button"
               className="draft-btn"
-              onClick={() => handleSubmit('draft')}
-              disabled={loading}
+              onClick={(e) => handleCreatePost(e, "draft")}
+              disabled={postLoading}
+              aria-label="Save post as draft"
             >
               Save Draft
             </button>
-            <button 
-              type="button" 
+            <button
+              type="button"
               className="publish-btn"
-              onClick={() => handleSubmit('published')}
-              disabled={loading}
+              onClick={(e) => handleCreatePost(e, "published")}
+              disabled={postLoading}
+              aria-label="Publish post"
             >
-              {loading ? 'Publishing...' : 'Publish'}
+              {postLoading ? "Publishing..." : "Publish"}
             </button>
           </div>
-        </div>
+        </form>
       </main>
     </div>
   );
